@@ -1,0 +1,119 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Search {
+  id    Int    @id @default(autoincrement())
+  name  String
+  count Int
+  // User User[]
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  username String  @unique @db.VarChar(30)
+  password String  @db.VarChar(72)
+  email    String?
+  phon     String?
+  role     Role    @default(USER)
+  Address  String  @db.VarChar(255)
+  // search   Search  @relation(fields: [searchId], references: [id],onDelete: Cascade, onUpdate: Cascade)
+
+  // todos Todo[]
+  // searchId Int
+  Payment Payment[]
+
+  @@map("users")
+}
+
+// model Todo {
+//   id        Int      @id @default(autoincrement())
+//   title     String   @db.VarChar(150)
+//   status    Status   @default(PENDING)
+//   dueDate   DateTime @map("due_date") @db.Date
+//   userId    Int      @map("user_id")
+//   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+//   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
+
+//   @@map("todos")
+// }
+
+enum Status {
+  PENDING
+  DOING
+  DONE
+}
+
+model Orders {
+  id            Int         @id @default(autoincrement())
+  orderDate     DateTime
+  TotalAmount   Float
+  // user          User       @relation(fields: [UserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  UserId        Int
+  restaurants   Restaurants @relation(fields: [restaurantsId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  restaurantsId Int
+  OrderDate     OrderDate[]
+}
+
+model Menutems {
+  id            Int         @id @default(autoincrement())
+  ItemName      String
+  price         Int
+  description   String
+  restaurants   Restaurants @relation(fields: [restaurantsId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  restaurantsId Int
+  file          String
+  OrderDate     OrderDate[]
+  Payment       Payment[]
+}
+
+model Reviews {
+  id            Int         @id @default(autoincrement())
+  rating        Int
+  comment       String
+  // user          User       @relation(fields: [UserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  UserId        Int
+  restaurants   Restaurants @relation(fields: [restaurantsId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  restaurantsId Int
+}
+
+model Restaurants {
+  id       Int        @id @default(autoincrement())
+  password String?
+  location String     @db.VarChar(100)
+  Orders   Orders[]
+  Menutems Menutems[]
+  Reviews  Reviews[]
+}
+
+model OrderDate {
+  id         Int      @id @default(autoincrement())
+  quantity   Int
+  order      Orders   @relation(fields: [ordersId], references: [id])
+  ordersId   Int
+  menutem    Menutems @relation(fields: [menutemsId], references: [id])
+  menutemsId Int
+}
+
+model Payment {
+  id       Int   @id @default(autoincrement())
+  username String
+  price    Int
+  userId   Int
+  amount   Float
+  user     User  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  menutem    Menutems @relation(fields: [menutemsId], references: [id])
+  menutemsId Int
+}
