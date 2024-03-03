@@ -20,34 +20,17 @@ model Search {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  username String  @unique @db.VarChar(30)
-  password String  @db.VarChar(72)
+  id       Int       @id @default(autoincrement())
+  username String    @unique @db.VarChar(30)
+  password String    @db.VarChar(72)
   email    String?
   phon     String?
-  role     Role    @default(USER)
-  Address  String  @db.VarChar(255)
-  // search   Search  @relation(fields: [searchId], references: [id],onDelete: Cascade, onUpdate: Cascade)
-
-  // todos Todo[]
-  // searchId Int
-  Payment Payment[]
+  role     Role      @default(USER)
+  Address  String    @db.VarChar(255)
+  Payment  Payment[]
 
   @@map("users")
 }
-
-// model Todo {
-//   id        Int      @id @default(autoincrement())
-//   title     String   @db.VarChar(150)
-//   status    Status   @default(PENDING)
-//   dueDate   DateTime @map("due_date") @db.Date
-//   userId    Int      @map("user_id")
-//   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-//   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
-//   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
-
-//   @@map("todos")
-// }
 
 enum Status {
   PENDING
@@ -107,13 +90,14 @@ model OrderDate {
 }
 
 model Payment {
-  id       Int   @id @default(autoincrement())
-  username String
-  price    Int
-  userId   Int
-  amount   Float
-  user     User  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
+  id         Int      @id @default(autoincrement())
+  username   String
+  namemenu   String
+  price      Int
+  userId     Int
+  amount     Float
+  pay        String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   menutem    Menutems @relation(fields: [menutemsId], references: [id])
   menutemsId Int
 }

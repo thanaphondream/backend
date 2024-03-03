@@ -7,6 +7,7 @@ const Restaurants = require("../controllers/RestaurantsId")
 const ProductController01 = require('../controllers/product-linkId');
 const Payments = require('../controllers/payment')
 const UsernamePayment = require('../controllers/UsernamePayment')
+const UserProduck = require('../controllers/UserProduck')
 
 
 router.post('/register', authController.register)
@@ -19,4 +20,6 @@ router.get('/me', authenticate, authController.getme)
 router.get('/getmenutems', authenticate, ProductController.getmenutems) 
 router.get('/getproduct/:id', ProductController01.orderdate)
 router.get('/user', authenticate,UsernamePayment.userid)
+router.get('/purchases', authenticate,UserProduck.userproduck);
+router.delete("/delete/:paymentId", UserProduck.deletemenu)
 module.exports = router
