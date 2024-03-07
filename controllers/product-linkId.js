@@ -21,3 +21,19 @@ exports.orderdate = async (req, res, next) => {
   }
 };
 
+exports.deletemenuorder = async (req, res, next) => {
+  const { menutem } = req.params;
+  console.log(menutem)
+
+  try {
+    const deletedMenuItemOrder = await prisma.menutems.delete({
+      where: {
+        id: Number(menutem)
+      }
+    });
+    res.json(deletedMenuItemOrder);
+  } catch (error) {
+    next(error);
+  }
+};
+

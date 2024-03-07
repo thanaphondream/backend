@@ -44,8 +44,6 @@ model Orders {
   TotalAmount   Float
   // user          User       @relation(fields: [UserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   UserId        Int
-  restaurants   Restaurants @relation(fields: [restaurantsId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  restaurantsId Int
   OrderDate     OrderDate[]
 }
 
@@ -54,8 +52,6 @@ model Menutems {
   ItemName      String
   price         Int
   description   String
-  restaurants   Restaurants @relation(fields: [restaurantsId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  restaurantsId Int
   file          String
   OrderDate     OrderDate[]
   Payment       Payment[]
@@ -67,18 +63,9 @@ model Reviews {
   comment       String
   // user          User       @relation(fields: [UserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   UserId        Int
-  restaurants   Restaurants @relation(fields: [restaurantsId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  restaurantsId Int
+
 }
 
-model Restaurants {
-  id       Int        @id @default(autoincrement())
-  password String?
-  location String     @db.VarChar(100)
-  Orders   Orders[]
-  Menutems Menutems[]
-  Reviews  Reviews[]
-}
 
 model OrderDate {
   id         Int      @id @default(autoincrement())

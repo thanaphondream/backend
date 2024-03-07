@@ -21,5 +21,7 @@ router.get('/getmenutems', authenticate, ProductController.getmenutems)
 router.get('/getproduct/:id', ProductController01.orderdate)
 router.get('/user', authenticate,UsernamePayment.userid)
 router.get('/purchases', authenticate,UserProduck.userproduck);
+
 router.delete("/delete/:paymentId", UserProduck.deletemenu)
+router.delete('/deletemenu/:menutem', ProductController01.deletemenuorder)
 module.exports = router

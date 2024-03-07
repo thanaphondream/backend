@@ -2,10 +2,8 @@ const db = require("../models/db");
 
 exports.createMenutems = async (req, res, next) => {
     try {
-      const { ItemName, price, description, restaurantsId, file} = req.body;
-      
-      // Validation
-      if (!(ItemName && price && description && restaurantsId && file)) {
+      const { ItemName, price, description, file} = req.body;
+      if (!(ItemName && price && description && file)) {
         return next(new Error("Please provide all required fields"));
       }
   
@@ -14,7 +12,6 @@ exports.createMenutems = async (req, res, next) => {
           ItemName,
           price : parseInt(price),
           description,
-          restaurantsId: parseInt(restaurantsId),
           file 
         }
       });
