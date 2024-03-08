@@ -8,13 +8,15 @@ const ProductController01 = require('../controllers/product-linkId');
 const Payments = require('../controllers/payment')
 const UsernamePayment = require('../controllers/UsernamePayment')
 const UserProduck = require('../controllers/UserProduck')
+const Cart = require('../controllers/CartAll')
 
 
 router.post('/register', authController.register)
 router.post('/login', authController.login)
 router.post('/res', Restaurants.createRestaurants)
 router.post('/menutems', ProductController.createMenutems)
-router.post('/payment', Payments.Paymentsm);
+router.post('/payment', Payments.Paymentsm)
+router.post('/cart/add', authenticate,Cart.Carts); 
 
 router.get('/me', authenticate, authController.getme) 
 router.get('/getmenutems', authenticate, ProductController.getmenutems) 
