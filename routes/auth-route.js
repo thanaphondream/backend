@@ -22,8 +22,10 @@ router.get('/me', authenticate, authController.getme)
 router.get('/getmenutems', authenticate, ProductController.getmenutems) 
 router.get('/getproduct/:id', ProductController01.orderdate)
 router.get('/user', authenticate,UsernamePayment.userid)
-router.get('/purchases', authenticate,UserProduck.userproduck);
+router.get('/purchases', authenticate,UserProduck.userproduck)
+router.get('/cartorder', authenticate, Cart.CartOrder)
 
 router.delete("/delete/:paymentId", UserProduck.deletemenu)
 router.delete('/deletemenu/:menutem', ProductController01.deletemenuorder)
+router.delete('/cartdelete/:basket', Cart.Cartdelete)
 module.exports = router

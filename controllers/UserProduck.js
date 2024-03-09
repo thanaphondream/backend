@@ -9,7 +9,7 @@ exports.userproduck = async (req, res, next) => {
       include: {
         menutem: true
       }
-    });
+    })
     
     return res.json(purchases);
   } catch (error) {
