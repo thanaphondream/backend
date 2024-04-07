@@ -9,6 +9,7 @@ const Payments = require('../controllers/payment')
 const UsernamePayment = require('../controllers/UsernamePayment')
 const UserProduck = require('../controllers/UserProduck')
 const Cart = require('../controllers/CartAll')
+// const Graph = require('../controllers/graph')
 
 
 router.post('/register', authController.register)
@@ -24,6 +25,7 @@ router.get('/getproduct/:id', ProductController01.orderdate)
 router.get('/user', authenticate,UsernamePayment.userid)
 router.get('/purchases', authenticate,UserProduck.userproduck)
 router.get('/cartorder', authenticate, Cart.CartOrder)
+router.get('/data', authenticate, Payments.graph)
 
 router.delete("/delete/:paymentId", UserProduck.deletemenu)
 router.delete('/deletemenu/:menutem', ProductController01.deletemenuorder)
