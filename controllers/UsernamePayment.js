@@ -5,7 +5,7 @@ exports.userid = async (req, res, next) => {
   try {
     
     const productData = await prisma.user.findFirst({
-      where: {
+      where: { 
         id: req.user.id
       }
     })

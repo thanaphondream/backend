@@ -10,25 +10,28 @@ datasource db {
 enum Role {
   USER
   ADMIN
+  OFFICER
 }
 
 model Search {
   id    Int    @id @default(autoincrement())
   name  String
   count Int
-  // User User[]
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
-  username String    @unique @db.VarChar(30)
-  password String    @db.VarChar(72)
-  email    String?
-  phon     String?
-  role     Role      @default(USER)
-  Address  String    @db.VarChar(255)
-  Payment  Payment[]
-  Basket   Basket[]
+  id        Int         @id @default(autoincrement())
+  username  String      @unique @db.VarChar(30)
+  password  String      @db.VarChar(72)
+  email     String?
+  phon      String?
+  role      Role        @default(USER)
+  Payment   Payment[]
+  location  Location[]
+  Reviews   Reviews[]
+  Profile   Profile[]
+  cart      Cart[]
+  ordercart OrderCart[]
 
   @@map("users")
 }
@@ -39,17 +42,15 @@ enum Status {
   DONE
 }
 
-model Basket {
-  id         Int         @id @default(autoincrement())
-  ItemName    String
-  price      Int
-  description String
-  user       User        @relation(fields: [UserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  UserId     Int
-  menutem    Menutems    @relation(fields: [menutemsId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+model Cart {
+  id         Int      @id @default(autoincrement())
+  total      Int
+  all_price  Int
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+  status     String
+  menutems   Menutems @relation(fields: [menutemsId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   menutemsId Int
-  file        String
-  OrderDate  OrderDate[]
 }
 
 model Menutems {
@@ -57,38 +58,115 @@ model Menutems {
   ItemName    String
   price       Int
   description String
-  file        String
-  OrderDate   OrderDate[]
-  Payment     Payment[]
-  Basket      Basket[]
+  file        String      @db.Text
+  Reviews     Reviews[]
+  Cart        Cart[]
+  ordercart   OrderCart[]
 }
 
 model Reviews {
-  id      Int    @id @default(autoincrement())
-  rating  Int
-  comment String
-  // user          User       @relation(fields: [UserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  UserId  Int
+  id         Int      @id @default(autoincrement())
+  rating     Int
+  comment    String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId     Int
+  menutem    Menutems @relation(fields: [menutemsId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  menutemsId Int
 }
 
-model OrderDate {
+model Order {
+  id        Int         @id @default(autoincrement())
+  total_all Int
+  allprice  Int
+  status    String
+  date      DateTime    @default(now())
+  ordercart OrderCart[]
+  Payment   Payment[]
+}
+
+model OrderCart {
   id         Int      @id @default(autoincrement())
-  quantity   Int
-  order      Basket   @relation(fields: [BasketId], references: [id])
-  BasketId   Int
-  menutem    Menutems @relation(fields: [menutemsId], references: [id])
+  order      Order    @relation(fields: [orderId], references: [id])
+  orderId    Int
+  total      Int
+  all_price  Int
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+  status     String
+  menutems   Menutems @relation(fields: [menutemsId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   menutemsId Int
+
+  @@index([orderId])
 }
 
 model Payment {
-  id         Int      @id @default(autoincrement())
-  username   String
-  namemenu   String
-  price      Int
+  id         Int        @id @default(autoincrement())
   userId     Int
   amount     Float
   pay        String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  menutem    Menutems @relation(fields: [menutemsId], references: [id])
-  menutemsId Int
+  status     String
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  location   Location   @relation(fields: [locationId], references: [id])
+  locationId Int
+  order      Order      @relation(fields: [orderId], references: [id])
+  orderId    Int
+  Delivery   Delivery[]
+}
+
+model Location {
+  id           Int       @id @default(autoincrement())
+  provinces    String    @db.VarChar(50)
+  amphures     String    @db.VarChar(50)
+  districts    String    @db.VarChar(50)
+  zip_code     Int
+  road         String    @db.VarChar(255)
+  village      String    @db.VarChar(20)
+  house_number String
+  other        String    @db.VarChar(50)
+  longitude    Float
+  latitude     Float
+  user         User      @relation(fields: [userId], references: [id])
+  userId       Int
+  Payment      Payment[]
+}
+
+model Delivery {
+  id        Int     @id @default(autoincrement())
+  image     String  @db.Text
+  name      String  @db.VarChar(50)
+  Note      String  @db.VarChar(200)
+  payment   Payment @relation(fields: [paymentId], references: [id])
+  paymentId Int
+}
+
+model provinces {
+  id           Int    @id @default(autoincrement())
+  code         Int
+  name_th      String @db.VarChar(50)
+  name_en      String @db.VarChar(50)
+  geography_id Int
+}
+
+model amphures {
+  id          Int    @id @default(autoincrement())
+  code        String @db.VarChar(45)
+  name_th     String @db.VarChar(45)
+  name_en     String @db.VarChar(45)
+  province_id Int
+}
+
+model districts {
+  id         Int    @id @default(autoincrement())
+  zip_code   Int
+  name_th    String @db.VarChar(45)
+  name_en    String @db.VarChar(45)
+  amphure_id String
+}
+
+model Profile {
+  id      Int    @id @default(autoincrement())
+  image   String @db.Text
+  imagebg String @db.Text
+  user    User   @relation(fields: [userId], references: [id])
+  userId  Int
 }

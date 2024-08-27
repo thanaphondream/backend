@@ -2,12 +2,14 @@ const axios = require('axios');
 
 //เปลี่ยน Token ด้วยน่ะครับ เช่น const token = 'waRRbLw3mIM7hEcyKaiUfNadR1O9zcMNloxAORZVTYx' ตรงไฟล์ payment.js บรรทัดที่ 4 ครับ
 
-exports.Linenotifys = async (token, message) => {
+exports.Linenotifys = async (token, message, imgs) => {
     try {
         const response = await axios.post('https://notify-api.line.me/api/notify', 
-        {
-            message: message
-        }, 
+        new URLSearchParams({
+            message: message,
+            imageThumbnail: imgs,  
+            imageFullsize: imgs     
+        }), 
         {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -19,4 +21,4 @@ exports.Linenotifys = async (token, message) => {
     } catch (error) {
         console.error(error);
     }
-};
+};;

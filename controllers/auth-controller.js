@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const db = require("../models/db");
 
 exports.register = async (req, res, next) => {
-  const { username, password, confirmPassword, email, phon, role, Address } = req.body;
+  const { username, password, confirmPassword, email, phon, role, image, imagebg } = req.body;
   try {
     // validation
     if (!(username && password && confirmPassword)) {
@@ -20,8 +20,13 @@ exports.register = async (req, res, next) => {
       password : hashedPassword,
       email,
       phon,
-      role,
-      Address
+      role: 'USER',
+      Profile: {
+        create:{
+          image,
+          imagebg
+        }
+      }
     };
 
     const rs = await db.user.create({ data  })
@@ -62,3 +67,4 @@ exports.login = async (req, res, next) => {
 exports.getme = (req,res,next) => {
   res.json(req.user)
 }
+
