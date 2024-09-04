@@ -1,0 +1,27 @@
+-- AlterTable
+ALTER TABLE `delivery` ADD COLUMN `date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3);
+
+-- CreateTable
+CREATE TABLE `Cancel` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `note` VARCHAR(200) NOT NULL,
+    `date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `orderId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Transfer` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `image` TEXT NOT NULL,
+    `paymentId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `Cancel` ADD CONSTRAINT `Cancel_orderId_fkey` FOREIGN KEY (`orderId`) REFERENCES `Order`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Transfer` ADD CONSTRAINT `Transfer_paymentId_fkey` FOREIGN KEY (`paymentId`) REFERENCES `Payment`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

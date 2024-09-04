@@ -3,6 +3,7 @@ const db = require("../models/db");
 const omise = require('omise')({ 'secretKey': 'skey_test_608h8g2ktfwnpf8sx9t' });
 const { Linenotifys } = require('./LineNotify')
 const token = 'waRRbLw3mIM7hEcyKaiUfNadR1O9zcMNloxAORZVTYx'
+const cloudUpload = require("../middlewares/cloudupload");
 
 exports.Paymentsm = async (req, res, next) => {
     try {
@@ -154,8 +155,8 @@ exports.paymnetmentLine = async (req, res, next) => {
     })
     res.json(Linepaymentmenu)
 
-    const img = "https://res.cloudinary.com/daw1e3jbg/image/upload/v1723846206/dkhqbokhcsjbdwwiexm3.jpg";
-    const imgs = Linepaymentmenu.order.ordercart.map(cart => cart.menutems.file);
+    // const img = "https://res.cloudinary.com/daw1e3jbg/image/upload/v1723846206/dkhqbokhcsjbdwwiexm3.jpg";
+    const img = Linepaymentmenu.order.ordercart.map(cart => cart.menutems.file);
     
     const tx = `
       ชำระผ่าน: ${Linepaymentmenu.pay}
@@ -190,7 +191,8 @@ exports.PaymentShowUser = async (req, res, next) => {
                   include: {
                     menutems: true
                   }
-                }
+                },
+                Cancel: true
               }
             }
           }
@@ -198,5 +200,43 @@ exports.PaymentShowUser = async (req, res, next) => {
       res.json(order)
   }catch(err){
       next(err)
+  }
+}
+
+exports.transfersave = async (req, res, next) => {
+  try{
+    const { paymentId, date } = req.body
+    const imagePromises = req.files.map(file => cloudUpload(file.path)); 
+    const imageUrls = await Promise.all(imagePromises);
+
+    const trans = await db.transfer.create({
+      data: {
+        image: imageUrls.join(','),
+        paymentId: parseInt(paymentId),
+        date: new Date(date)
+      }
+    })
+
+    res.json({mgs: "TransFerSave This Ok : ", trans})
+  }catch(err){
+
+  }
+}
+
+exports.paystatus = async (req, res, next) => {
+  try{
+    const { id } = req.params
+    const { pay, status } = req.body
+    const paymets = await db.payment.update({
+        where: {
+          id: Number(id)
+        }, data: {
+          status,
+          pay
+        }
+    })
+    res.json({msg: "Payment Update This Ok : ", paymets})
+  }catch(err){
+    next(err)
   }
 }

@@ -6,4 +6,6 @@ const upload = require('../middlewares/upload')
 
 router.post('/dliverys', upload.array("image",5), dlivery.Dliverysave)
 
+router.post('/cancel', dlivery.CancalSave)
+
 module.exports = router;

@@ -82,6 +82,7 @@ model Order {
   date      DateTime    @default(now())
   ordercart OrderCart[]
   Payment   Payment[]
+  Cancel    Cancel[]
 }
 
 model OrderCart {
@@ -99,6 +100,14 @@ model OrderCart {
   @@index([orderId])
 }
 
+model Cancel {
+  id      Int      @id @default(autoincrement())
+  note    String   @db.VarChar(200)
+  date    DateTime @default(now())
+  order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  orderId Int
+}
+
 model Payment {
   id         Int        @id @default(autoincrement())
   userId     Int
@@ -111,6 +120,15 @@ model Payment {
   order      Order      @relation(fields: [orderId], references: [id])
   orderId    Int
   Delivery   Delivery[]
+  Transfer   Transfer[]
+}
+
+model Transfer {
+  id        Int      @id @default(autoincrement())
+  image     String   @db.Text
+  payment   Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  paymentId Int
+  date      DateTime @default(now())
 }
 
 model Location {
@@ -131,11 +149,12 @@ model Location {
 }
 
 model Delivery {
-  id        Int     @id @default(autoincrement())
-  image     String  @db.Text
-  name      String  @db.VarChar(50)
-  Note      String  @db.VarChar(200)
-  payment   Payment @relation(fields: [paymentId], references: [id])
+  id        Int      @id @default(autoincrement())
+  image     String   @db.Text
+  name      String   @db.VarChar(50)
+  Note      String   @db.VarChar(200)
+  date      DateTime @default(now())
+  payment   Payment  @relation(fields: [paymentId], references: [id])
   paymentId Int
 }
 

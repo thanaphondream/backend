@@ -68,7 +68,8 @@ exports.orderOfficer = async (req, res, next) => {
                     include: {
                         location: true,
                         user: true,
-                        Delivery: true
+                        Delivery: true,
+                        Transfer: true
                     }
                 },
                 ordercart: {
