@@ -3,25 +3,27 @@ const cloudUpload = require("../middlewares/cloudupload");
 const { connect } = require("../routes/auth-route");
 
 exports.Dliverysave = async (req, res, next) => {
-    try{
-        const { name, Note, paymentId, date} = req.body
-        const imagePromises = req.files.map(file => cloudUpload(file.path)); 
-        const imageUrls = await Promise.all(imagePromises);
+    try {
+        const { Note, paymentId, date } = req.body;
 
-        const deliverys = await db.delivery.create({
+        const image = req.files['image'] ? await cloudUpload(req.files['image'][0].path) : null;
+        const imgpay = req.files['imgpay'] ? await cloudUpload(req.files['imgpay'][0].path) : null;
+        
+        const delivery = await db.delivery.create({
             data: {
-                image: imageUrls.join(','),
-                name,
+                image,
+                imgpay,
                 Note,
                 paymentId: parseInt(paymentId),
-                date: new Date(date)
+                date: new Date(date),
             }
-        })
-        res.json({mgs: "DeliveryFoodSave This Ok :", deliverys})
-    }catch(err){
-        next(err)
+        });
+
+        res.json({ msg: "Delivery food saved successfully.", delivery });
+    } catch (err) {
+        next(err);
     }
-}
+};
 
 exports.CancalSave = async (req, res, next) => {
     try {

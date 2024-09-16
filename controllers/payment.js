@@ -185,6 +185,7 @@ exports.PaymentShowUser = async (req, res, next) => {
             userId: req.user.id
           },include: {
             user: true,
+            Delivery: true,
             order: {
               include: {
                 ordercart: {

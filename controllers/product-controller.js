@@ -4,7 +4,7 @@ const cloudUpload = require("../middlewares/cloudupload");
 
 exports.createMenutems = async (req, res, next) => {
   try {
-    const { ItemName, price, description } = req.body;
+    const { ItemName, price, description, status } = req.body;
     if (!(ItemName && price && description && req.files && req.files.length > 0)) {
       return next(new Error("Please provide all required fields"));
     }
@@ -18,7 +18,8 @@ exports.createMenutems = async (req, res, next) => {
         ItemName,
         price: parseInt(price, 10),
         description,
-        file: imageUrls.join(',') 
+        file: imageUrls.join(','),
+        status: 1
       }
     });
 
@@ -99,3 +100,20 @@ exports.createMenutems = async (req, res, next) => {
       next(err)
     }
   }
+
+exports.statusedit = async (req, res, next) => {
+  try{
+    const { id } = req.params
+    const { status } = req.body
+    const munus = await db.menutems.update({
+      where:{
+        id: Number(id)
+      },data: {
+        status,
+      }
+    })
+    res.json({mag: "Update Status This OK : ", munus})
+  }catch(err){
+    next(err)
+  }
+}

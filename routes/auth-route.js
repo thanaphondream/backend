@@ -46,6 +46,7 @@ router.put('/munus/:id',upload.array("file",4), ProductController.getmenutemsupd
 router.put('/profileupdate/:id',upload.array("image",1), profile.profileUpdate)
 router.put('/profileupdatebg/:id',upload.array("image",2), profile.profileUpdateimabg)
 router.put('/updaterole/:id', ProductController.updaterole)
+router.put('/monusstatus/:id', ProductController.statusedit)
 
 
 module.exports = router

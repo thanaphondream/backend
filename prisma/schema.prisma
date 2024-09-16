@@ -59,6 +59,7 @@ model Menutems {
   price       Int
   description String
   file        String      @db.Text
+  status      Int
   Reviews     Reviews[]
   Cart        Cart[]
   ordercart   OrderCart[]
@@ -151,7 +152,7 @@ model Location {
 model Delivery {
   id        Int      @id @default(autoincrement())
   image     String   @db.Text
-  name      String   @db.VarChar(50)
+  imgpay    String   @db.Text
   Note      String   @db.VarChar(200)
   date      DateTime @default(now())
   payment   Payment  @relation(fields: [paymentId], references: [id])
