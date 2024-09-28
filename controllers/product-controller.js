@@ -1,6 +1,6 @@
 const { json } = require("express");
 const db = require("../models/db");
-const cloudUpload = require("../middlewares/cloudupload");
+const cloudUpload = require('../middlewares/cloudupload');
 
 exports.createMenutems = async (req, res, next) => {
   try {
