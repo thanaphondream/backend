@@ -30,7 +30,7 @@
     "nodemon": "^3.1.4",
     "omise": "^0.12.1",
     "react-qr-code": "^2.0.12",
-    "multer-storage-cloudinary": "^4.0.0" // ถ้าคุณใช้ cloudinary ในการอัปโหลดไฟล์
+    "multer-storage-cloudinary": "^4.0.0" 
   },
   "devDependencies": {
     "prisma": "^5.16.1"
