@@ -1,6 +1,6 @@
 const { default: axios } = require("axios")
 const db = require("../models/db")
-const cloudUpload = require("../middlewares/cloudupload");
+const cloudUpload = require("../middlewares/cloudUpload");
 
 exports.profilePost = async (req, res, next) => {
     try{

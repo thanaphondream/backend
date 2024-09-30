@@ -1,5 +1,5 @@
 const db = require("../models/db");
-const cloudUpload = require("../middlewares/cloudupload");
+const cloudUpload = require("../middlewares/cloudUpload");
 const { connect } = require("../routes/auth-route");
 
 exports.Dliverysave = async (req, res, next) => {

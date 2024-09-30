@@ -3,7 +3,7 @@ const db = require("../models/db");
 const omise = require('omise')({ 'secretKey': 'skey_test_608h8g2ktfwnpf8sx9t' });
 const { Linenotifys } = require('./LineNotify')
 const token = 'waRRbLw3mIM7hEcyKaiUfNadR1O9zcMNloxAORZVTYx'
-const cloudUpload = require("../middlewares/cloudupload");
+const cloudUpload = require("../middlewares/cloudUpload");
 
 exports.Paymentsm = async (req, res, next) => {
     try {
