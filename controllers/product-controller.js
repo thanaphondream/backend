@@ -1,33 +1,33 @@
 const { json } = require("express");
 const db = require("../models/db");
-const cloudUpload = require('../middlewares/cloudupload');
+// const cloudUpload = require('../middlewares/cloudupload');
 
-exports.createMenutems = async (req, res, next) => {
-  try {
-    const { ItemName, price, description, status } = req.body;
-    if (!(ItemName && price && description && req.files && req.files.length > 0)) {
-      return next(new Error("Please provide all required fields"));
-    }
+// exports.createMenutems = async (req, res, next) => {
+//   try {
+//     const { ItemName, price, description, status } = req.body;
+//     if (!(ItemName && price && description && req.files && req.files.length > 0)) {
+//       return next(new Error("Please provide all required fields"));
+//     }
 
-    const imagePromises = req.files.map(file => cloudUpload(file.path)); 
-    const imageUrls = await Promise.all(imagePromises);
+//     const imagePromises = req.files.map(file => cloudUpload(file.path)); 
+//     const imageUrls = await Promise.all(imagePromises);
 
 
-    const menutems = await db.menutems.create({
-      data: {
-        ItemName,
-        price: parseInt(price, 10),
-        description,
-        file: imageUrls.join(','),
-        status: 1
-      }
-    });
+//     const menutems = await db.menutems.create({
+//       data: {
+//         ItemName,
+//         price: parseInt(price, 10),
+//         description,
+//         file: imageUrls.join(','),
+//         status: 1
+//       }
+//     });
 
-    res.json({ msg: 'Product created successfully', menutems });
-  } catch (error) {
-    next(error);
-  }
-};
+//     res.json({ msg: 'Product created successfully', menutems });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 
   exports.getmenutems = async (req, res, next) => {
@@ -39,39 +39,39 @@ exports.createMenutems = async (req, res, next) => {
     }
   };
 
-  exports.getmenutemsupdate = async (req, res, next) => {
-    try {
-      const { ItemName, price, description } = req.body;
-      const { id } = req.params;
+  // exports.getmenutemsupdate = async (req, res, next) => {
+  //   try {
+  //     const { ItemName, price, description } = req.body;
+  //     const { id } = req.params;
   
 
   
-      // const menutem = await db.menutems.findUnique({
-      //   where: { id: parseInt(id) }
-      // });
+  //     // const menutem = await db.menutems.findUnique({
+  //     //   where: { id: parseInt(id) }
+  //     // });
   
-      // if (!menutem) {
-      //   return res.status(404).json({ msg: "resource not found" });
-      // }
+  //     // if (!menutem) {
+  //     //   return res.status(404).json({ msg: "resource not found" });
+  //     // }
   
-      const imagePromises = req.files.map(file => cloudUpload(file.path)); 
-      const imageUrls = await Promise.all(imagePromises);
+  //     const imagePromises = req.files.map(file => cloudUpload(file.path)); 
+  //     const imageUrls = await Promise.all(imagePromises);
   
-      const updatedMenutem = await db.menutems.update({
-        where: { id: parseInt(id) },
-        data: {
-          ItemName,
-          price: parseInt(price, 10),
-          description,
-          file: imageUrls.join(',')
-        }
-      });
+  //     const updatedMenutem = await db.menutems.update({
+  //       where: { id: parseInt(id) },
+  //       data: {
+  //         ItemName,
+  //         price: parseInt(price, 10),
+  //         description,
+  //         file: imageUrls.join(',')
+  //       }
+  //     });
   
-      res.json(updatedMenutem);
-    } catch (err) {
-      next(err);
-    }
-  };
+  //     res.json(updatedMenutem);
+  //   } catch (err) {
+  //     next(err);
+  //   }
+  // };
   
 
   exports.updaterole = async (req, res, next) => {
