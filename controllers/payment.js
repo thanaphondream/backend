@@ -3,7 +3,7 @@ const db = require("../models/db");
 const omise = require('omise')({ 'secretKey': 'skey_test_608h8g2ktfwnpf8sx9t' });
 const { Linenotifys } = require('./LineNotify')
 const token = 'waRRbLw3mIM7hEcyKaiUfNadR1O9zcMNloxAORZVTYx'
-const cloudUpload = require("../middlewares/cloudUpload");
+// const cloudUpload = require("../middlewares/cloudUpload");
 
 exports.Paymentsm = async (req, res, next) => {
     try {
@@ -204,25 +204,25 @@ exports.PaymentShowUser = async (req, res, next) => {
   }
 }
 
-exports.transfersave = async (req, res, next) => {
-  try{
-    const { paymentId, date } = req.body
-    const imagePromises = req.files.map(file => cloudUpload(file.path)); 
-    const imageUrls = await Promise.all(imagePromises);
+// exports.transfersave = async (req, res, next) => {
+//   try{
+//     const { paymentId, date } = req.body
+//     const imagePromises = req.files.map(file => cloudUpload(file.path)); 
+//     const imageUrls = await Promise.all(imagePromises);
 
-    const trans = await db.transfer.create({
-      data: {
-        image: imageUrls.join(','),
-        paymentId: parseInt(paymentId),
-        date: new Date(date)
-      }
-    })
+//     const trans = await db.transfer.create({
+//       data: {
+//         image: imageUrls.join(','),
+//         paymentId: parseInt(paymentId),
+//         date: new Date(date)
+//       }
+//     })
 
-    res.json({mgs: "TransFerSave This Ok : ", trans})
-  }catch(err){
+//     res.json({mgs: "TransFerSave This Ok : ", trans})
+//   }catch(err){
 
-  }
-}
+//   }
+// }
 
 exports.paystatus = async (req, res, next) => {
   try{
